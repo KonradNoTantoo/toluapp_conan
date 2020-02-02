@@ -13,9 +13,8 @@ class ToluappConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
     folder_name = "{}-{}".format(name, version)
+    requires = ["lua/5.1.5@utopia/testing"]
 
-    def requirements(self):
-        self.requires("lua/5.1.5@utopia/testing")
 
     def source(self):
         tools.get("https://github.com/LuaDist/toluapp/archive/1.0.93.tar.gz")
@@ -24,26 +23,30 @@ class ToluappConan(ConanFile):
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
 
+
     def configure_cmake(self):
         cmake = CMake(self)
 
         if self.settings.compiler != "Visual Studio":
+            cmake.definitions["CMAKE_CFLAGS"] = "-fPIC"
             cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-ldl"
 
         cmake.configure(source_folder=self.folder_name)
         return cmake
 
+
     def build(self):
         cmake = self.configure_cmake()
         cmake.build()
 
+
     def package(self):
         cmake = self.configure_cmake()
         cmake.install()
+
 
     def package_info(self):
         self.cpp_info.libs = ["toluapp"]
         bindir = os.path.join(self.package_folder, "bin")
         self.output.info("Appending to PATH environment variable: {}".format(bindir))
         self.env_info.path.append(bindir)
-
