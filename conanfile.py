@@ -7,7 +7,7 @@ class ToluappConan(ConanFile):
     version = "1.0.93"
     license = "MIT"
     author = "konrad.no.tantoo"
-    url = ""
+    url = "https://github.com/KonradNoTantoo/toluapp_conan"
     description = "tolua++ is an extension of toLua, a tool to integrate C/C++ code with Lua."
     topics = ("conan", "lua", "code binding")
     settings = "os", "compiler", "build_type", "arch"
@@ -27,8 +27,6 @@ conan_basic_setup()''')
     def configure_cmake(self):
         cmake = CMake(self)
 
-        # put definitions here so that they are re-used in cmake between
-        # build() and package()
         if self.settings.compiler != "Visual Studio":
             cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-ldl"
 
