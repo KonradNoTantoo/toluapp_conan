@@ -28,8 +28,9 @@ conan_basic_setup()''')
         cmake = CMake(self)
 
         if self.settings.compiler != "Visual Studio":
-            cmake.definitions["CMAKE_CFLAGS"] = "-fPIC"
             cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-ldl"
+            if self.settings.arch != "x86":
+                cmake.definitions["CMAKE_CFLAGS"] = "-fPIC"
 
         cmake.configure(source_folder=self.folder_name)
         return cmake
