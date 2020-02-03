@@ -28,9 +28,11 @@ conan_basic_setup()''')
         cmake = CMake(self)
 
         if self.settings.compiler != "Visual Studio":
-            cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-ldl"
+            # cmake's find_package(Lua) tends to forget system libs
+            cmake.definitions["CMAKE_SHARED_LINKER_FLAGS"] = "-ldl -lm"
+            cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-ldl -lm"
             if self.settings.arch != "x86":
-                cmake.definitions["CMAKE_CFLAGS"] = "-fPIC"
+                cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = "ON"
 
         cmake.configure(source_folder=self.folder_name)
         return cmake
