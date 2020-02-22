@@ -28,9 +28,9 @@ conan_basic_setup()''')
         cmake = CMake(self)
 
         if self.settings.compiler != "Visual Studio":
-            # cmake's find_package(Lua) tends to forget system libs
-            cmake.definitions["CMAKE_SHARED_LINKER_FLAGS"] = "-ldl -lm"
-            cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-ldl -lm"
+            # toluapp's FindLua.cmake forgets dl system lib
+            # we have to override LUA_LIBRARIES for linkage to work
+            cmake.definitions["LUA_LIBRARIES"] = "lua;dl;m"
             if self.settings.arch != "x86":
                 cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = "ON"
 
