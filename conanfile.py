@@ -31,6 +31,7 @@ conan_basic_setup()''')
             # cmake's find_package(Lua) tends to forget system libs
             cmake.definitions["CMAKE_SHARED_LINKER_FLAGS"] = "-ldl -lm"
             cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-ldl -lm"
+            cmake.definitions["CMAKE_VERBOSE_MAKEFILE"] = "TRUE"
             if self.settings.arch != "x86":
                 cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = "ON"
 
